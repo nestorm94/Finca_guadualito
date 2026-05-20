@@ -1,0 +1,19 @@
+@model Ciclo12026
+@{
+    ViewData["Title"] = $"Editar #{Model.Id}";
+}
+
+<h2 class="page-title">Editar registro</h2>
+
+<form asp-action="Edit" method="post" class="form-card">
+    <input type="hidden" asp-for="Id" />
+    <partial name="_FormFields" model="Model" />
+    <div class="form-actions">
+        <button type="submit">Guardar cambios</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

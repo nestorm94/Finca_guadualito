@@ -1,0 +1,6 @@
+﻿@model ListaPaginadaViewModel<AuditoriaCambio>
+@{ ViewData["Title"]="Auditoria"; ViewData["ControllerName"]="AuditoriaCambios"; }
+<h2 class="page-title">Auditoria de cambios</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Tabla</th><th>Accion</th><th>Usuario</th><th>Fecha</th></tr></thead><tbody>
+@foreach(var i in Model.Items){<tr><td>@i.IdAuditoria</td><td>@i.Tabla</td><td>@i.Accion</td><td>@i.Usuario</td><td>@i.Fecha.ToString("g")</td></tr>}
+</tbody></table></div><partial name="_Paginacion" model="Model" />

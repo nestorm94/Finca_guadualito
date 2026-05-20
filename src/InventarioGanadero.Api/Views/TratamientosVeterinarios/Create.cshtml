@@ -1,0 +1,8 @@
+﻿@model TratamientoVeterinario
+<form asp-action="Create" method="post" class="form-card">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<partial name="_AnimalKeyField" />
+<div class="form-group"><label asp-for="FechaTratamiento"></label><input asp-for="FechaTratamiento" type="date" /><span asp-validation-for="FechaTratamiento"></span></div>
+<div class="form-group"><label asp-for="Enfermedad"></label><input asp-for="Enfermedad" /></div><div class="form-group"><label asp-for="Medicamento"></label><input asp-for="Medicamento" /></div>
+<div class="form-actions"><button type="submit">Guardar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></div></form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

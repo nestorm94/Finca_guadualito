@@ -1,0 +1,16 @@
+@model ListaPaginadaViewModel<Propietario>
+@{ ViewData["Title"] = "Propietarios"; ViewData["ControllerName"] = "Propietarios"; }
+<h2 class="page-title">Propietarios</h2>
+<p><a asp-action="Create" class="btn">Nuevo propietario</a></p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>ID</th><th>Nombre</th><th>Documento</th><th>Teléfono</th><th>Activo</th><th>Acciones</th></tr></thead>
+<tbody>
+@foreach (var item in Model.Items) {
+<tr>
+<td>@item.IdPropietario</td><td>@item.Nombre</td><td>@item.Documento</td><td>@item.Telefono</td>
+<td>@(item.Activo ? "Sí" : "No")</td>
+<td class="actions"><a asp-action="Edit" asp-route-id="@item.IdPropietario">Editar</a> <a asp-action="Delete" asp-route-id="@item.IdPropietario">Eliminar</a></td>
+</tr> }
+</tbody></table></div>
+<partial name="_Paginacion" model="Model" />

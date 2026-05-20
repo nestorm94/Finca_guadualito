@@ -1,0 +1,66 @@
+@model Animal
+
+<div class="form-group">
+    <label asp-for="IdPropietario"></label>
+    <select asp-for="IdPropietario" asp-items="ViewBag.IdPropietario"></select>
+    <span asp-validation-for="IdPropietario" class="field-validation-error"></span>
+</div>
+<div class="form-group">
+    <label asp-for="IdTipoAnimal"></label>
+    <select asp-for="IdTipoAnimal" asp-items="ViewBag.IdTipoAnimal"></select>
+    <span asp-validation-for="IdTipoAnimal" class="field-validation-error"></span>
+</div>
+<div class="form-group">
+    <label asp-for="IdEstadoAnimal"></label>
+    <select asp-for="IdEstadoAnimal" asp-items="ViewBag.IdEstadoAnimal"></select>
+    <span asp-validation-for="IdEstadoAnimal" class="field-validation-error"></span>
+</div>
+<div class="form-group">
+    <label asp-for="IdLote"></label>
+    <select asp-for="IdLote" asp-items="ViewBag.IdLote">
+        <option value="">-- Sin lote --</option>
+    </select>
+</div>
+<div class="form-group">
+    <label asp-for="IdRaza"></label>
+    <select asp-for="IdRaza" asp-items="ViewBag.IdRaza">
+        <option value="">-- Sin raza --</option>
+    </select>
+</div>
+<div class="form-group">
+    <label asp-for="IdColor"></label>
+    <select asp-for="IdColor" asp-items="ViewBag.IdColor">
+        <option value="">-- Sin color --</option>
+    </select>
+</div>
+<div class="form-group">
+    <label asp-for="Sexo"></label>
+    <select asp-for="Sexo" asp-items="ViewBag.Sexo"></select>
+    <span asp-validation-for="Sexo" class="field-validation-error"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EdadMeses"></label>
+    <input asp-for="EdadMeses" type="number" />
+    <span asp-validation-for="EdadMeses" class="field-validation-error"></span>
+</div>
+<div class="form-group">
+    <label asp-for="FechaNacimiento"></label>
+    <input asp-for="FechaNacimiento" type="date" />
+</div>
+<div class="form-group">
+    <label asp-for="FechaIngreso"></label>
+    <input asp-for="FechaIngreso" type="date" />
+</div>
+<div class="form-group">
+    <label asp-for="PesoActualKg"></label>
+    <input asp-for="PesoActualKg" type="number" step="0.01" />
+    <span asp-validation-for="PesoActualKg" class="field-validation-error"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Observacion"></label>
+    <textarea asp-for="Observacion" rows="3"></textarea>
+</div>
+<div class="form-group">
+    <label asp-for="Activo"></label>
+    <input asp-for="Activo" type="checkbox" />
+</div>

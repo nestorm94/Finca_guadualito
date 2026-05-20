@@ -1,0 +1,6 @@
+@model Propietario
+@{ ViewData["Title"] = "Eliminar propietario"; }
+<h2 class="page-title">¿Eliminar propietario?</h2>
+<p><strong>@Model.Nombre</strong></p>
+<form asp-action="Delete" method="post"><input type="hidden" asp-for="IdPropietario" />
+<button type="submit" class="btn btn-danger">Eliminar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></form>

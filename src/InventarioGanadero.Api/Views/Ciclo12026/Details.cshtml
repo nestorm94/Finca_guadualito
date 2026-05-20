@@ -1,0 +1,23 @@
+@model Ciclo12026
+@{
+    ViewData["Title"] = $"Animal #{Model.Id}";
+}
+
+<h2 class="page-title">Detalle del registro</h2>
+
+<dl class="details-grid">
+    <div><dt>ID</dt><dd>@Model.Id</dd></div>
+    <div><dt>Número</dt><dd>@Model.Numero</dd></div>
+    <div><dt>Año</dt><dd>@Model.Ano</dd></div>
+    <div><dt>Propietario</dt><dd>@Model.Propietario</dd></div>
+    <div><dt>Color</dt><dd>@Model.Color</dd></div>
+    <div><dt>Sexo</dt><dd>@Model.Sexo</dd></div>
+    <div><dt>Lote</dt><dd>@Model.Lote</dd></div>
+    <div><dt>Fecha vacuna</dt><dd>@(Model.FechaVacuna?.ToString("dd/MM/yyyy") ?? "-")</dd></div>
+    <div style="grid-column: 1 / -1"><dt>Observacion</dt><dd>@Model.Observacion</dd></div>
+</dl>
+
+<div class="form-actions" style="margin-top: 1.5rem">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+</div>

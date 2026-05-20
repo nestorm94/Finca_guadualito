@@ -1,0 +1,28 @@
+# Build
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.exe
+*.pdb
+
+# Visual Studio / Cursor
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Secrets
+appsettings.Development.json
+appsettings.Local.json
+**/appsettings.*.local.json
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log

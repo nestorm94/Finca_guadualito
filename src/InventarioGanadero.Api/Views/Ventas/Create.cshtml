@@ -1,0 +1,8 @@
+﻿@model Venta
+<form asp-action="Create" method="post" class="form-card">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<partial name="_AnimalKeyField" />
+<div class="form-group"><label asp-for="FechaVenta"></label><input asp-for="FechaVenta" type="date" /><span asp-validation-for="FechaVenta"></span></div>
+<div class="form-group"><label asp-for="ValorVenta"></label><input asp-for="ValorVenta" type="number" step="0.01" /></div><div class="form-group"><label asp-for="Comprador"></label><input asp-for="Comprador" /></div>
+<div class="form-actions"><button type="submit">Guardar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></div></form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

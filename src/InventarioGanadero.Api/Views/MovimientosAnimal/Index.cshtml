@@ -1,0 +1,7 @@
+﻿@model ListaPaginadaViewModel<MovimientoAnimal>
+@{ ViewData["Title"]="Movimientos"; ViewData["ControllerName"]="MovimientosAnimal"; }
+<h2 class="page-title">Movimientos de animales</h2><p><a asp-action="Create" class="btn">Nuevo</a></p>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Animal</th><th>Fecha</th><th>Tipo</th><th></th></tr></thead><tbody>
+@foreach(var i in Model.Items){<tr><td>@i.IdMovimiento</td><td>@i.Numero/@i.Anio</td><td>@i.FechaMovimiento.ToString("dd/MM/yyyy")</td><td>@i.TipoMovimiento</td>
+<td><a asp-action="Edit" asp-route-id="@i.IdMovimiento">Editar</a> <a asp-action="Delete" asp-route-id="@i.IdMovimiento">Eliminar</a></td></tr>}
+</tbody></table></div><partial name="_Paginacion" model="Model" />

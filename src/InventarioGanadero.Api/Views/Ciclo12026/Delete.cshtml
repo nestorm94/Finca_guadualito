@@ -1,0 +1,19 @@
+@model Ciclo12026
+@{
+    ViewData["Title"] = $"Eliminar #{Model.Id}";
+}
+
+<h2 class="page-title">¿Eliminar este registro?</h2>
+
+<dl class="details-grid">
+    <div><dt>ID</dt><dd>@Model.Id</dd></div>
+    <div><dt>Número</dt><dd>@Model.Numero</dd></div>
+    <div><dt>Propietario</dt><dd>@Model.Propietario</dd></div>
+    <div><dt>Lote</dt><dd>@Model.Lote</dd></div>
+</dl>
+
+<form asp-action="Delete" method="post" class="form-actions" style="margin-top: 1.5rem">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

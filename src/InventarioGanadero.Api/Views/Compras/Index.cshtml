@@ -1,0 +1,7 @@
+﻿@model ListaPaginadaViewModel<Compra>
+@{ ViewData["Title"]="Compras"; ViewData["ControllerName"]="Compras"; }
+<h2 class="page-title">Compras</h2><p><a asp-action="Create" class="btn">Nuevo</a></p>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Animal</th><th>Fecha</th><th>Valor</th><th>Acciones</th></tr></thead><tbody>
+@foreach(var i in Model.Items){<tr><td>@i.IdCompra</td><td>@i.Numero / @i.Anio</td><td>@i.FechaCompra.ToString("dd/MM/yyyy")</td><td>@i.ValorCompra</td>
+<td class="actions"><a asp-action="Edit" asp-route-id="@i.IdCompra">Editar</a> <a asp-action="Delete" asp-route-id="@i.IdCompra">Eliminar</a></td></tr>}
+</tbody></table></div><partial name="_Paginacion" model="Model" />

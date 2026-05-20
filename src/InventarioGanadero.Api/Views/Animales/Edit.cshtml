@@ -1,0 +1,10 @@
+@model Animal
+@{ ViewData["Title"] = "Editar animal"; }
+<h2 class="page-title">Editar animal @Model.Numero / @Model.Anio</h2>
+<form asp-action="Edit" method="post" class="form-card">
+<input type="hidden" asp-for="Numero" /><input type="hidden" asp-for="Anio" /><input type="hidden" asp-for="FechaRegistro" />
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<partial name="_AnimalFormFields" model="Model" />
+<div class="form-actions"><button type="submit">Guardar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

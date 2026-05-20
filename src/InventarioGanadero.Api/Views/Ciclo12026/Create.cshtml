@@ -1,0 +1,18 @@
+@model Ciclo12026
+@{
+    ViewData["Title"] = "Nuevo registro";
+}
+
+<h2 class="page-title">Nuevo animal</h2>
+
+<form asp-action="Create" method="post" class="form-card">
+    <partial name="_FormFields" model="Model" />
+    <div class="form-actions">
+        <button type="submit">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

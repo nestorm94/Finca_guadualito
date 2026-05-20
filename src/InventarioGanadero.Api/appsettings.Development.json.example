@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "InventarioGanadero": "Server=TU_SERVIDOR;Database=DBInventarioGanadero;User Id=TU_USUARIO;Password=TU_PASSWORD;TrustServerCertificate=True;"
+  }
+}

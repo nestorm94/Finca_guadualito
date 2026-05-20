@@ -1,0 +1,10 @@
+@model Parto
+<form asp-action="Create" method="post" class="form-card">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="form-group"><label>Madre (animal)</label><select name="animalKey" asp-items="ViewBag.AnimalKey"><option value="">--</option></select></div>
+<div class="form-group"><label asp-for="FechaParto"></label><input asp-for="FechaParto" type="date" /></div>
+<div class="form-group"><label asp-for="CantidadCrias"></label><input asp-for="CantidadCrias" type="number" /><span asp-validation-for="CantidadCrias"></span></div>
+<div class="form-group"><label asp-for="Observacion"></label><textarea asp-for="Observacion" rows="2"></textarea></div>
+<div class="form-actions"><button type="submit">Guardar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

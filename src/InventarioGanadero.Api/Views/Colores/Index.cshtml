@@ -1,0 +1,11 @@
+﻿@model ListaPaginadaViewModel<Color>
+@{ ViewData["Title"] = "Colores"; ViewData["ControllerName"] = "Colores"; }
+<h2 class="page-title">Colores</h2>
+<p><a asp-action="Create" class="btn">Nuevo</a></p>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr></thead><tbody>
+@foreach (var item in Model.Items) {
+<tr><td>@item.IdColor</td><td>@item.Nombre</td><td class="actions">
+<a asp-action="Edit" asp-route-id="@item.IdColor">Editar</a>
+<a asp-action="Delete" asp-route-id="@item.IdColor">Eliminar</a></td></tr> }
+</tbody></table></div>
+<partial name="_Paginacion" model="Model" />

@@ -1,0 +1,76 @@
+@model Ciclo12026ListaViewModel
+@{
+    ViewData["Title"] = "Inventario — Ciclo 1 2026";
+}
+
+<h2 class="page-title">Listado de animales</h2>
+
+<form asp-action="Index" method="get" class="toolbar">
+    <div class="form-group">
+        <label asp-for="FiltroPropietario">Propietario</label>
+        <input type="text" name="propietario" value="@Model.FiltroPropietario" placeholder="Buscar..." />
+    </div>
+    <div class="form-group">
+        <label asp-for="FiltroLote">Lote</label>
+        <input type="text" name="lote" value="@Model.FiltroLote" placeholder="Buscar..." />
+    </div>
+    <button type="submit">Buscar</button>
+    <a asp-action="Index" class="btn btn-secondary">Limpiar</a>
+</form>
+
+<div class="info-bar">
+    @Model.TotalRegistros registro(s) en total · Página @Model.Pagina de @Model.TotalPaginas
+</div>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Número</th>
+                <th>Año</th>
+                <th>Propietario</th>
+                <th>Color</th>
+                <th>Sexo</th>
+                <th>Lote</th>
+                <th>Fecha vacuna</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Registros)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Numero</td>
+                    <td>@item.Ano</td>
+                    <td>@item.Propietario</td>
+                    <td><span class="badge">@item.Color</span></td>
+                    <td>@item.Sexo</td>
+                    <td>@item.Lote</td>
+                    <td>@(item.FechaVacuna?.ToString("dd/MM/yyyy") ?? "—")</td>
+                    <td class="actions">
+                        <a asp-action="Details" asp-route-id="@item.Id">Ver</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.TotalPaginas > 1)
+{
+    <nav class="pagination">
+        @if (Model.Pagina > 1)
+        {
+            <a asp-action="Index" asp-route-pagina="@(Model.Pagina - 1)" asp-route-propietario="@Model.FiltroPropietario" asp-route-lote="@Model.FiltroLote">← Anterior</a>
+        }
+        <span class="current">@Model.Pagina</span>
+        @if (Model.Pagina < Model.TotalPaginas)
+        {
+            <a asp-action="Index" asp-route-pagina="@(Model.Pagina + 1)" asp-route-propietario="@Model.FiltroPropietario" asp-route-lote="@Model.FiltroLote">Siguiente →</a>
+        }
+    </nav>
+}

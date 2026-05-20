@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "Acceso denegado";
+}
+<h2 class="page-title">Acceso denegado</h2>
+<div class="info-bar" style="background:#3f1d1d;color:#fca5a5;">
+    No tiene permisos para realizar esta acción.
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <span>Su rol: <strong>@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</strong></span>
+    }
+</div>
+<p><a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver al inicio</a></p>

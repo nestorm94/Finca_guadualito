@@ -1,0 +1,13 @@
+﻿@model UsuarioFormViewModel
+@{ ViewData["Title"] = "Nuevo usuario"; }
+<h2 class="page-title">Nuevo usuario</h2>
+<form asp-action="Create" method="post" class="form-card">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="form-group"><label asp-for="NombreCompleto"></label><input asp-for="NombreCompleto" /><span asp-validation-for="NombreCompleto"></span></div>
+<div class="form-group"><label asp-for="UsuarioLogin"></label><input asp-for="UsuarioLogin" /><span asp-validation-for="UsuarioLogin"></span></div>
+<div class="form-group"><label asp-for="Password"></label><input asp-for="Password" type="password" /><span asp-validation-for="Password"></span></div>
+<div class="form-group"><label asp-for="IdRol"></label><select asp-for="IdRol" asp-items="ViewBag.IdRol"></select><span asp-validation-for="IdRol"></span></div>
+<div class="form-group"><label asp-for="Activo"></label><input asp-for="Activo" type="checkbox" checked /></div>
+<div class="form-actions"><button type="submit">Guardar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

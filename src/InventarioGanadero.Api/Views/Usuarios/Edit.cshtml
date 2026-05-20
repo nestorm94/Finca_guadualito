@@ -1,0 +1,14 @@
+﻿@model UsuarioFormViewModel
+@{ ViewData["Title"] = "Editar usuario"; }
+<h2 class="page-title">Editar usuario</h2>
+<form asp-action="Edit" method="post" class="form-card">
+<input type="hidden" asp-for="IdUsuario" />
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="form-group"><label asp-for="NombreCompleto"></label><input asp-for="NombreCompleto" /></div>
+<div class="form-group"><label asp-for="UsuarioLogin"></label><input asp-for="UsuarioLogin" /></div>
+<div class="form-group"><label asp-for="Password"></label><input asp-for="Password" type="password" placeholder="Dejar vacío para no cambiar" /></div>
+<div class="form-group"><label asp-for="IdRol"></label><select asp-for="IdRol" asp-items="ViewBag.IdRol"></select></div>
+<div class="form-group"><label asp-for="Activo"></label><input asp-for="Activo" type="checkbox" /></div>
+<div class="form-actions"><button type="submit">Guardar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

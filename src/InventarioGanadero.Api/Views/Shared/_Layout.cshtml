@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Registro Ganadero</title>
+    <link rel="stylesheet" href="~/css/site.css?v=2" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-shell">
+        <partial name="_SidebarNav" />
+
+        <div class="app-content">
+            <header class="top-bar">
+                <button type="button" class="btn-menu" id="btnMenu" aria-label="Abrir menú">☰</button>
+                <div class="top-bar-title">
+                    <span class="page-context">@ViewData["Title"]</span>
+                </div>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="user-panel">
+                        <div class="user-info">
+                            <span class="user-name">@User.Identity.Name</span>
+                            <span class="user-role">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</span>
+                        </div>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn-logout">Cerrar sesión</button>
+                        </form>
+                    </div>
+                }
+            </header>
+
+            <main class="site-main">
+                @RenderBody()
+            </main>
+
+            <footer class="site-footer">
+                <span>Registro Ganadero · DBRegistroGanadero</span>
+            </footer>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script>
+        (function () {
+            const btn = document.getElementById('btnMenu');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (!btn || !sidebar) return;
+            function toggle() {
+                sidebar.classList.toggle('open');
+                overlay?.classList.toggle('open');
+            }
+            btn.addEventListener('click', toggle);
+            overlay?.addEventListener('click', toggle);
+        })();
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

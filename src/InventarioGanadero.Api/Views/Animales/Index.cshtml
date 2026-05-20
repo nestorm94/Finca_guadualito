@@ -1,0 +1,18 @@
+@model ListaPaginadaViewModel<Animal>
+@{ ViewData["Title"] = "Animales"; ViewData["ControllerName"] = "Animales"; }
+<h2 class="page-title">Inventario de animales</h2>
+<p><a asp-action="Create" class="btn">Nuevo animal</a></p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Número</th><th>Año</th><th>Propietario</th><th>Tipo</th><th>Sexo</th><th>Lote</th><th>Acciones</th></tr></thead>
+<tbody>
+@foreach (var item in Model.Items) {
+<tr>
+<td>@item.Numero</td><td>@item.Anio</td><td>@item.Propietario?.Nombre</td><td>@item.TipoAnimal?.Nombre</td>
+<td>@item.Sexo</td><td>@item.Lote?.Nombre</td>
+<td class="actions">
+<a asp-action="Edit" asp-route-numero="@item.Numero" asp-route-anio="@item.Anio">Editar</a>
+<a asp-action="Delete" asp-route-numero="@item.Numero" asp-route-anio="@item.Anio">Eliminar</a>
+</td></tr> }
+</tbody></table></div>
+<partial name="_Paginacion" model="Model" />

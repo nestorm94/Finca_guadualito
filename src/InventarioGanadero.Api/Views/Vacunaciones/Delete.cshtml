@@ -1,0 +1,6 @@
+@model Vacunacion
+@{ ViewData["Title"] = "Eliminar vacunación"; }
+<h2 class="page-title">¿Eliminar vacunación?</h2>
+<p>Animal <strong>@Model.Numero / @Model.Anio</strong> — @Model.NombreVacuna</p>
+<form asp-action="Delete" method="post"><input type="hidden" asp-for="IdVacunacion" />
+<button type="submit" class="btn btn-danger">Eliminar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></form>

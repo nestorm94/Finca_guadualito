@@ -1,0 +1,7 @@
+﻿@model Lote
+@{ ViewData["Title"] = "Eliminar"; }
+<h2 class="page-title">Eliminar registro?</h2>
+<p><strong>@Model.Nombre</strong></p>
+<form asp-action="Delete" method="post"><input type="hidden" asp-for="IdLote" />
+<button type="submit" class="btn btn-danger">Eliminar</button>
+<a asp-action="Index" class="btn btn-secondary">Cancelar</a></form>
