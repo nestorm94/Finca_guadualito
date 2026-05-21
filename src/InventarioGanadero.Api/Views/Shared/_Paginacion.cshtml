@@ -1,6 +1,7 @@
 @model dynamic
 @{
     var controller = ViewData["ControllerName"]?.ToString() ?? ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewData["ActionName"]?.ToString() ?? "Index";
     int pagina = Model.Pagina;
     int totalPaginas = Model.TotalPaginas;
     int totalRegistros = Model.TotalRegistros;
@@ -15,12 +16,12 @@
     <nav class="pagination">
         @if (pagina > 1)
         {
-            <a asp-controller="@controller" asp-action="Index" asp-route-pagina="@(pagina - 1)">← Anterior</a>
+            <a asp-controller="@controller" asp-action="@action" asp-route-pagina="@(pagina - 1)">← Anterior</a>
         }
         <span class="current">@pagina</span>
         @if (pagina < totalPaginas)
         {
-            <a asp-controller="@controller" asp-action="Index" asp-route-pagina="@(pagina + 1)">Siguiente →</a>
+            <a asp-controller="@controller" asp-action="@action" asp-route-pagina="@(pagina + 1)">Siguiente →</a>
         }
     </nav>
 }

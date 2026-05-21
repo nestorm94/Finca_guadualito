@@ -45,6 +45,10 @@ public class Animal
     [DataType(DataType.Date)]
     public DateTime? FechaNacimiento { get; set; }
 
+    [Range(1, 6)]
+    [Display(Name = "Bimestre nacimiento")]
+    public int? BimestreNacimiento { get; set; }
+
     [Display(Name = "Fecha ingreso")]
     [DataType(DataType.Date)]
     public DateTime? FechaIngreso { get; set; }

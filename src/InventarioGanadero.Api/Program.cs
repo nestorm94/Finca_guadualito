@@ -1,5 +1,6 @@
 using InventarioGanadero.Api.Repositories;
 using InventarioGanadero.Api.Services.Auth;
+using InventarioGanadero.Api.Services.Reproduccion;
 using InventarioGanadero.Api.Services.Security;
 using InventarioGanadero.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<RegistroGanaderoDbContext>(options =>
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPartoService, PartoService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -45,7 +47,9 @@ using (var scope = app.Services.CreateScope())
     await auth.MigratePlainPasswordsAsync();
 }
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+    app.UseDeveloperExceptionPage();
+else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();

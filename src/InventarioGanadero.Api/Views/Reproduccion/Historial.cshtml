@@ -1,0 +1,59 @@
+@model InventarioGanadero.Api.Models.ListaPaginadaViewModel<InventarioGanadero.Api.Models.Dtos.PartoHistorialDto>
+@{
+    ViewData["Title"] = "Historial de partos";
+    ViewData["ControllerName"] = "Reproduccion";
+}
+
+<link rel="stylesheet" href="~/css/reproduccion.css" asp-append-version="true" />
+
+<h2 class="page-title">Historial de partos</h2>
+
+@if (TempData["Ok"] is string ok)
+{
+    <div class="info-bar">@ok</div>
+}
+
+<p class="toolbar">
+    <a asp-action="RegistrarParto" class="btn">Registrar parto</a>
+</p>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Madre</th>
+                <th>Fecha parto</th>
+                <th>Cant. crías</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Crías asociadas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Items)
+            {
+                <tr>
+                    <td>@p.IdParto</td>
+                    <td>@p.Madre</td>
+                    <td>@p.FechaParto.ToString("dd/MM/yyyy")</td>
+                    <td>@p.CantidadCrias</td>
+                    <td><span class="badge">@p.TipoParto</span></td>
+                    <td><span class="badge">@p.EstadoParto</span></td>
+                    <td>
+                        @if (p.CriasAsociadas.Count == 0)
+                        {
+                            <span class="muted">—</span>
+                        }
+                        else
+                        {
+                            @string.Join(", ", p.CriasAsociadas)
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<partial name="_Paginacion" model="Model" />

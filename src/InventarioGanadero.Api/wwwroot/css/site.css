@@ -128,6 +128,11 @@ a:hover { color: var(--accent-hover); }
   transform: rotate(90deg);
 }
 
+.nav-group.has-active > summary {
+  color: var(--accent);
+  font-weight: 600;
+}
+
 .nav-group a {
   display: block;
   padding: 0.45rem 1rem 0.45rem 1.5rem;

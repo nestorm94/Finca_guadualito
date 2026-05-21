@@ -37,6 +37,7 @@ public class AnimalesController(RegistroGanaderoDbContext db) : Controller
             return View(model);
         }
         model.FechaRegistro = DateTime.Now;
+        AplicarBimestre(model);
         db.Animales.Add(model);
         await db.SaveChangesAsync(ct);
         return RedirectToAction(nameof(Index));
@@ -62,9 +63,16 @@ public class AnimalesController(RegistroGanaderoDbContext db) : Controller
             await SelectListHelper.CargarCatalogosAnimalAsync(db, ViewBag, ct);
             return View(model);
         }
+        AplicarBimestre(model);
         db.Update(model);
         await db.SaveChangesAsync(ct);
         return RedirectToAction(nameof(Index));
+    }
+
+    private static void AplicarBimestre(Animal model)
+    {
+        if (model.FechaNacimiento.HasValue)
+            model.BimestreNacimiento = BimestreNacimientoHelper.Calcular(model.FechaNacimiento.Value);
     }
 
     [Authorize(Roles = RoleNames.Operacion)]

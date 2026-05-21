@@ -22,6 +22,7 @@ public class RegistroGanaderoDbContext(DbContextOptions<RegistroGanaderoDbContex
     public DbSet<Venta> Ventas => Set<Venta>();
     public DbSet<Muerte> Muertes => Set<Muerte>();
     public DbSet<Parto> Partos => Set<Parto>();
+    public DbSet<RelacionMadreCria> RelacionesMadreCria => Set<RelacionMadreCria>();
     public DbSet<AuditoriaCambio> AuditoriaCambios => Set<AuditoriaCambio>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -122,7 +123,17 @@ public class RegistroGanaderoDbContext(DbContextOptions<RegistroGanaderoDbContex
         {
             e.ToTable("Partos");
             e.HasKey(x => x.IdParto);
+            e.Property(x => x.TipoParto).HasMaxLength(50);
+            e.Property(x => x.EstadoParto).HasMaxLength(50);
             e.HasOne(x => x.Madre).WithMany().HasForeignKey(x => new { x.NumeroMadre, x.AnioMadre });
+            e.HasMany(x => x.RelacionesCrias).WithOne(r => r.Parto).HasForeignKey(r => r.IdParto);
+        });
+
+        modelBuilder.Entity<RelacionMadreCria>(e =>
+        {
+            e.ToTable("RelacionMadreCria");
+            e.HasKey(x => x.IdRelacion);
+            e.HasOne(x => x.Cria).WithMany().HasForeignKey(x => new { x.NumeroCria, x.AnioCria });
         });
 
         modelBuilder.Entity<AuditoriaCambio>(e =>

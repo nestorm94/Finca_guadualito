@@ -1,0 +1,64 @@
+.form-card--wide {
+  max-width: 720px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.search-madre {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--accent);
+}
+
+.cria-panel {
+  background: #152535;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cria-panel h4 {
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.hint, .muted {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.dashboard-repro {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.dashboard-repro h2 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.ultimos-partos {
+  list-style: none;
+  padding: 0;
+}
+
+.ultimos-partos li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.ultimos-partos li:last-child {
+  border-bottom: none;
+}

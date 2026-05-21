@@ -1,0 +1,107 @@
+@model InventarioGanadero.Api.Models.ViewModels.RegistrarPartoViewModel
+@{
+    ViewData["Title"] = "Registrar parto";
+}
+
+<link rel="stylesheet" href="~/css/reproduccion.css" asp-append-version="true" />
+
+<h2 class="page-title">Registrar parto</h2>
+
+<form asp-action="RegistrarParto" method="post" class="form-card form-card--wide" id="formParto">
+    <div asp-validation-summary="ModelOnly" class="field-validation-error"></div>
+
+    <div class="form-group">
+        <label asp-for="MadreKey">Buscar vaca madre</label>
+        <input type="search" id="buscarMadre" class="search-madre" placeholder="Número, año o número/año (ej. 120/2025)" autocomplete="off" />
+        <select asp-for="MadreKey" asp-items="ViewBag.MadreKey" id="madreKey" class="filter-select">
+            <option value="">— Seleccione la madre —</option>
+        </select>
+        <span class="hint">Hembras activas. Use la búsqueda para filtrar.</span>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label asp-for="FechaParto"></label>
+            <input asp-for="FechaParto" type="date" id="fechaParto" />
+            <span asp-validation-for="FechaParto"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CantidadCrias"></label>
+            <input asp-for="CantidadCrias" type="number" min="1" max="10" id="cantidadCrias" />
+            <span asp-validation-for="CantidadCrias"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label asp-for="TipoParto"></label>
+            <select asp-for="TipoParto" asp-items="ViewBag.TipoParto"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="EstadoParto"></label>
+            <select asp-for="EstadoParto" asp-items="ViewBag.EstadoParto"></select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Observacion"></label>
+        <textarea asp-for="Observacion" rows="2"></textarea>
+    </div>
+
+    <h3 class="section-title">Crías del parto</h3>
+    <p class="hint">Por cada cría: regístrela como <strong>nueva</strong> (se crea en Animales) o <strong>existente</strong>.</p>
+
+    <div id="criasContainer">
+        @for (var i = 0; i < Model.Crias.Count; i++)
+        {
+            <div class="cria-panel" data-index="@i">
+                <h4>Cría @(i + 1)</h4>
+                <div class="form-group">
+                    <label>Modo</label>
+                    <select name="Crias[@i].Modo" class="modo-cria">
+                        <option value="Nueva" selected="@(Model.Crias[i].Modo == "Nueva" ? "selected" : null)">Crear nueva cría</option>
+                        <option value="Existente" selected="@(Model.Crias[i].Modo == "Existente" ? "selected" : null)">Cría existente</option>
+                    </select>
+                </div>
+                <div class="bloque-nueva">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Número (vacío = automático)</label>
+                            <input name="Crias[@i].NumeroNuevo" type="number" min="1" value="@Model.Crias[i].NumeroNuevo" />
+                        </div>
+                        <div class="form-group">
+                            <label>Sexo</label>
+                            <select name="Crias[@i].Sexo">
+                                <option value="MACHO" selected="@(Model.Crias[i].Sexo == "MACHO" ? "selected" : null)">MACHO → BECERRO</option>
+                                <option value="HEMBRA" selected="@(Model.Crias[i].Sexo == "HEMBRA" ? "selected" : null)">HEMBRA → BECERRA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Color</label>
+                            <select name="Crias[@i].IdColor" asp-items="ViewBag.IdColor">
+                                <option value="">—</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="hint">Año = año del parto · Bimestre y fecha nacimiento se calculan automáticamente.</p>
+                </div>
+                <div class="bloque-existente" style="display:none;">
+                    <div class="form-group">
+                        <label>Animal existente</label>
+                        <input name="Crias[@i].AnimalKeyExistente" type="text" placeholder="numero|anio ej. 45|2025" class="cria-existente-key" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="form-actions">
+        <button type="submit">Guardar parto</button>
+        <a asp-action="Historial" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/reproduccion.js" asp-append-version="true"></script>
+}

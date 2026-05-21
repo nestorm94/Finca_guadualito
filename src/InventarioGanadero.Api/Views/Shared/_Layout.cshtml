@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Registro Ganadero</title>
-    <link rel="stylesheet" href="~/css/site.css?v=2" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css?v=3" asp-append-version="true" />
 </head>
 <body>
     <div class="app-shell">
@@ -48,13 +48,25 @@
             const btn = document.getElementById('btnMenu');
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            if (!btn || !sidebar) return;
-            function toggle() {
-                sidebar.classList.toggle('open');
-                overlay?.classList.toggle('open');
+            if (btn && sidebar) {
+                function toggle() {
+                    sidebar.classList.toggle('open');
+                    overlay?.classList.toggle('open');
+                }
+                btn.addEventListener('click', toggle);
+                overlay?.addEventListener('click', toggle);
             }
-            btn.addEventListener('click', toggle);
-            overlay?.addEventListener('click', toggle);
+
+            const groups = document.querySelectorAll('.nav-group');
+            groups.forEach(function (g) { g.removeAttribute('open'); });
+            groups.forEach(function (group) {
+                group.addEventListener('toggle', function () {
+                    if (!group.open) return;
+                    groups.forEach(function (other) {
+                        if (other !== group) other.removeAttribute('open');
+                    });
+                });
+            });
         })();
     </script>
     @await RenderSectionAsync("Scripts", required: false)

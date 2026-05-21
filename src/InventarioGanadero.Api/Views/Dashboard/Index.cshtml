@@ -1,0 +1,302 @@
+@model InventarioGanadero.Api.Models.ViewModels.DashboardGanaderoViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    var total = Model.TotalAnimales;
+    decimal Pct(int n) => total > 0 ? Math.Round((decimal)n / total * 100, 1) : 0;
+}
+
+<link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+
+<section class="dashboard-page">
+    @if (!string.IsNullOrEmpty(Model.ErrorCarga))
+    {
+        <div class="info-bar" style="background:#3d2a1a;color:#fcd34d;">@Model.ErrorCarga</div>
+    }
+
+    <header class="dashboard-header">
+        <div>
+            <h1 class="dashboard-title">Dashboard ganadero</h1>
+            <p class="dashboard-subtitle">
+                @if (Model.EsResumenGeneral)
+                {
+                    <span>Resumen general de todos los propietarios (animales activos)</span>
+                }
+                else
+                {
+                    <span>Inventario de <strong>@Model.NombrePropietarioSeleccionado</strong></span>
+                }
+            </p>
+        </div>
+    </header>
+
+    <form method="get" asp-controller="Dashboard" asp-action="Index" class="dashboard-filter">
+        <input type="hidden" name="paginaEdades" value="1" />
+        <div class="form-group filter-propietario">
+            <label for="idPropietario">Propietario</label>
+            <select name="idPropietario" id="idPropietario" class="filter-select" onchange="this.form.submit()">
+                @foreach (var item in Model.ListaPropietarios)
+                {
+                    if (item.Selected)
+                    {
+                        <option value="@item.Value" selected="selected">@item.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            </select>
+        </div>
+        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary btn-clear">Limpiar filtro</a>
+    </form>
+
+    <div class="dashboard-cards">
+        <article class="dash-card dash-card--primary">
+            <span class="dash-card__icon" aria-hidden="true">🐄</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Total animales</span>
+                <span class="dash-card__value">@Model.TotalAnimales</span>
+            </div>
+        </article>
+        <article class="dash-card dash-card--hembra">
+            <span class="dash-card__icon" aria-hidden="true">♀</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Hembras</span>
+                <span class="dash-card__value">@Model.TotalHembras</span>
+            </div>
+        </article>
+        <article class="dash-card dash-card--macho">
+            <span class="dash-card__icon" aria-hidden="true">♂</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Machos</span>
+                <span class="dash-card__value">@Model.TotalMachos</span>
+            </div>
+        </article>
+        <article class="dash-card">
+            <span class="dash-card__icon" aria-hidden="true">🐮</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Vacas</span>
+                <span class="dash-card__value">@Model.TotalVacas</span>
+            </div>
+        </article>
+        <article class="dash-card">
+            <span class="dash-card__icon" aria-hidden="true">🐂</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Toros</span>
+                <span class="dash-card__value">@Model.TotalToros</span>
+            </div>
+        </article>
+        <article class="dash-card">
+            <span class="dash-card__icon" aria-hidden="true">🐄</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Novillas</span>
+                <span class="dash-card__value">@Model.TotalNovillas</span>
+            </div>
+        </article>
+        <article class="dash-card">
+            <span class="dash-card__icon" aria-hidden="true">🐃</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Novillos</span>
+                <span class="dash-card__value">@Model.TotalNovillos</span>
+            </div>
+        </article>
+        <article class="dash-card">
+            <span class="dash-card__icon" aria-hidden="true">🐄</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Becerras</span>
+                <span class="dash-card__value">@Model.TotalBecerras</span>
+            </div>
+        </article>
+        <article class="dash-card">
+            <span class="dash-card__icon" aria-hidden="true">🐂</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Becerros</span>
+                <span class="dash-card__value">@Model.TotalBecerros</span>
+            </div>
+        </article>
+        <article class="dash-card dash-card--cria">
+            <span class="dash-card__icon" aria-hidden="true">🐣</span>
+            <div class="dash-card__body">
+                <span class="dash-card__label">Crías</span>
+                <span class="dash-card__value">@Model.TotalCrias</span>
+            </div>
+        </article>
+    </div>
+
+    <section class="dashboard-edades">
+        <h2>Reporte de edades — Vacas</h2>
+        <p class="dashboard-edades-desc">
+            Vacas activas ordenadas de <strong>mayor a menor edad</strong>.
+            Página <strong>@Model.PaginaEdadesVacas</strong> de <strong>@Model.TotalPaginasEdadesVacas</strong>
+            (@Model.TamanoPaginaEdadesVacas por página · <strong>@Model.TotalVacasEnReporte</strong> vacas en total).
+            @if (Model.EdadPromedioVacasAnios.HasValue)
+            {
+                <span>Edad promedio: <strong>@Model.EdadPromedioVacasAnios</strong> años.</span>
+            }
+        </p>
+
+        @if (Model.DistribucionEdadVacas.Count > 0)
+        {
+            <div class="edad-rangos">
+                @foreach (var r in Model.DistribucionEdadVacas)
+                {
+                    <div class="edad-rango-item">
+                        <span class="edad-rango-label">@r.Rango</span>
+                        <span class="edad-rango-bar-wrap">
+                            <span class="edad-rango-bar" style="width: @(Model.TotalVacasEnReporte > 0 ? Math.Max(8, r.Cantidad * 100 / Model.TotalVacasEnReporte) : 0)%"></span>
+                        </span>
+                        <span class="edad-rango-count">@r.Cantidad</span>
+                    </div>
+                }
+            </div>
+        }
+
+        @if (Model.VacasPorEdad.Count == 0)
+        {
+            <p class="hint">No hay vacas activas para el filtro seleccionado.</p>
+        }
+        else
+        {
+            <div class="table-wrap dashboard-table-wrap">
+                <table class="dashboard-table tabla-edades">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Animal</th>
+                            @if (Model.EsResumenGeneral)
+                            {
+                                <th>Propietario</th>
+                            }
+                            <th>Edad</th>
+                            <th>Años</th>
+                            <th>Rango</th>
+                            <th>Nacimiento</th>
+                            <th>Bim.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var rank = (Model.PaginaEdadesVacas - 1) * Model.TamanoPaginaEdadesVacas; }
+                        @foreach (var v in Model.VacasPorEdad)
+                        {
+                            rank++;
+                            var claseFila = rank <= 3 ? "fila-muy-vieja" : rank <= 10 ? "fila-vieja" : "";
+                            <tr class="@claseFila">
+                                <td>@rank</td>
+                                <td>
+                                    <a asp-controller="Animales" asp-action="Edit" asp-route-numero="@v.Numero" asp-route-anio="@v.Anio">@v.Identificador</a>
+                                </td>
+                                @if (Model.EsResumenGeneral)
+                                {
+                                    <td>@(v.Propietario ?? "—")</td>
+                                }
+                                <td>
+                                    @v.EdadTexto
+                                    @if (v.EdadEstimada)
+                                    {
+                                        <span class="badge badge-estimada" title="Estimada por año de registro">est.</span>
+                                    }
+                                </td>
+                                <td>@(v.EdadAnios?.ToString("0.#") ?? "—")</td>
+                                <td><span class="badge">@v.RangoEdad</span></td>
+                                <td>@(v.FechaNacimiento?.ToString("dd/MM/yyyy") ?? "—")</td>
+                                <td>@(v.BimestreNacimiento?.ToString() ?? "—")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.TotalPaginasEdadesVacas > 1)
+            {
+                <nav class="pagination pagination-edades">
+                    @if (Model.PaginaEdadesVacas > 1)
+                    {
+                        <a asp-controller="Dashboard" asp-action="Index"
+                           asp-route-idPropietario="@Model.IdPropietarioSeleccionado"
+                           asp-route-paginaEdades="@(Model.PaginaEdadesVacas - 1)">← Anterior</a>
+                    }
+                    <span class="current">@Model.PaginaEdadesVacas / @Model.TotalPaginasEdadesVacas</span>
+                    @if (Model.PaginaEdadesVacas < Model.TotalPaginasEdadesVacas)
+                    {
+                        <a asp-controller="Dashboard" asp-action="Index"
+                           asp-route-idPropietario="@Model.IdPropietarioSeleccionado"
+                           asp-route-paginaEdades="@(Model.PaginaEdadesVacas + 1)">Siguiente →</a>
+                    }
+                </nav>
+            }
+        }
+    </section>
+
+    <section class="dashboard-repro">
+        <h2>Reproducción</h2>
+        <div class="dashboard-cards">
+            <article class="dash-card">
+                <span class="dash-card__icon" aria-hidden="true">📋</span>
+                <div class="dash-card__body">
+                    <span class="dash-card__label">Total partos</span>
+                    <span class="dash-card__value">@Model.TotalPartos</span>
+                </div>
+            </article>
+            <article class="dash-card">
+                <span class="dash-card__icon" aria-hidden="true">🐄</span>
+                <div class="dash-card__body">
+                    <span class="dash-card__label">Vacas con crías</span>
+                    <span class="dash-card__value">@Model.VacasConCrias</span>
+                </div>
+            </article>
+        </div>
+        @if (Model.UltimosPartos.Count > 0)
+        {
+            <div class="table-wrap" style="margin-top:1rem;">
+                <h3 class="dashboard-table-title">Últimos partos</h3>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Madre</th><th>Fecha</th><th>Crías</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.UltimosPartos)
+                        {
+                            <tr>
+                                <td>@p.IdParto</td>
+                                <td>@p.Madre</td>
+                                <td>@p.FechaParto.ToString("dd/MM/yyyy")</td>
+                                <td>@p.CantidadCrias</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <p style="margin-top:0.75rem;"><a asp-controller="Reproduccion" asp-action="Historial">Ver historial completo →</a></p>
+        }
+    </section>
+
+    <div class="table-wrap dashboard-table-wrap">
+        <h2 class="dashboard-table-title">Tabla resumen</h2>
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Indicador</th>
+                    <th>Cantidad</th>
+                    <th>% del total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Total animales activos</td><td>@Model.TotalAnimales</td><td>@(total > 0 ? "100%" : "—")</td></tr>
+                <tr><td>Hembras</td><td>@Model.TotalHembras</td><td>@Pct(Model.TotalHembras)%</td></tr>
+                <tr><td>Machos</td><td>@Model.TotalMachos</td><td>@Pct(Model.TotalMachos)%</td></tr>
+                <tr><td>Vacas</td><td>@Model.TotalVacas</td><td>@Pct(Model.TotalVacas)%</td></tr>
+                <tr><td>Toros</td><td>@Model.TotalToros</td><td>@Pct(Model.TotalToros)%</td></tr>
+                <tr><td>Novillas</td><td>@Model.TotalNovillas</td><td>@Pct(Model.TotalNovillas)%</td></tr>
+                <tr><td>Novillos</td><td>@Model.TotalNovillos</td><td>@Pct(Model.TotalNovillos)%</td></tr>
+                <tr><td>Becerras</td><td>@Model.TotalBecerras</td><td>@Pct(Model.TotalBecerras)%</td></tr>
+                <tr><td>Becerros</td><td>@Model.TotalBecerros</td><td>@Pct(Model.TotalBecerros)%</td></tr>
+                <tr><td>Crías</td><td>@Model.TotalCrias</td><td>@Pct(Model.TotalCrias)%</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="dashboard-footnote">
+        Solo se cuentan animales con <code>Activo = 1</code> y estado <strong>ACTIVO</strong>.
+        Clasificación por tipo según catálogo <em>TiposAnimales</em>.
+    </p>
+</section>

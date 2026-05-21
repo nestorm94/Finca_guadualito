@@ -1,15 +1,18 @@
 using System.ComponentModel.DataAnnotations;
+using InventarioGanadero.Api.Models.Dtos;
 
-namespace InventarioGanadero.Infrastructure.Entities;
+namespace InventarioGanadero.Api.Models.ViewModels;
 
-public class Parto
+public class RegistrarPartoViewModel
 {
-    public int IdParto { get; set; }
+    public string? MadreKey { get; set; }
 
-    [Display(Name = "Número madre")]
+    [Display(Name = "Madre (vaca)")]
+    public string? MadreBusqueda { get; set; }
+
+    [Required(ErrorMessage = "Seleccione la madre.")]
     public int NumeroMadre { get; set; }
 
-    [Display(Name = "Año madre")]
     public int AnioMadre { get; set; }
 
     [Required]
@@ -17,24 +20,18 @@ public class Parto
     [Display(Name = "Fecha parto")]
     public DateTime FechaParto { get; set; } = DateTime.Today;
 
-    [Range(1, 20, ErrorMessage = "Cantidad de crías entre 1 y 20.")]
+    [Range(1, 10)]
     [Display(Name = "Cantidad crías")]
     public int CantidadCrias { get; set; } = 1;
 
-    [StringLength(50)]
     [Display(Name = "Tipo parto")]
     public string TipoParto { get; set; } = "NORMAL";
 
-    [StringLength(50)]
     [Display(Name = "Estado parto")]
     public string EstadoParto { get; set; } = "REGISTRADO";
 
-    [StringLength(400)]
+    [Display(Name = "Observación")]
     public string? Observacion { get; set; }
 
-    [Display(Name = "Fecha registro")]
-    public DateTime FechaRegistro { get; set; } = DateTime.Now;
-
-    public Animal? Madre { get; set; }
-    public ICollection<RelacionMadreCria> RelacionesCrias { get; set; } = [];
+    public List<CriaPartoDto> Crias { get; set; } = [new()];
 }

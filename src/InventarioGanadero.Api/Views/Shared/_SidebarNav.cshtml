@@ -1,6 +1,7 @@
 @{
     var ctrl = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     bool Active(string name) => string.Equals(ctrl, name, StringComparison.OrdinalIgnoreCase);
+    bool InGroup(params string[] controllers) => controllers.Any(Active);
     var isAdmin = User.IsInRole("ADMINISTRADOR");
 }
 
@@ -13,8 +14,11 @@
         <a asp-controller="Home" asp-action="Index" class="nav-item @(Active("Home") ? "active" : "")">
             <span class="nav-icon">⌂</span> Inicio
         </a>
+        <a asp-controller="Dashboard" asp-action="Index" class="nav-item @(Active("Dashboard") ? "active" : "")">
+            <span class="nav-icon">▦</span> Dashboard
+        </a>
 
-        <details class="nav-group" open>
+        <details class="nav-group @(InGroup("Animales", "Propietarios", "Vacunaciones", "Pesajes", "MovimientosAnimal") ? "has-active" : "")">
             <summary>Inventario</summary>
             <a asp-controller="Animales" asp-action="Index" class="@(Active("Animales") ? "active" : "")">Animales</a>
             <a asp-controller="Propietarios" asp-action="Index" class="@(Active("Propietarios") ? "active" : "")">Propietarios</a>
@@ -23,7 +27,7 @@
             <a asp-controller="MovimientosAnimal" asp-action="Index" class="@(Active("MovimientosAnimal") ? "active" : "")">Movimientos</a>
         </details>
 
-        <details class="nav-group" open>
+        <details class="nav-group @(InGroup("Lotes", "Razas", "Colores", "TiposAnimales", "EstadosAnimal") ? "has-active" : "")">
             <summary>Catálogos</summary>
             <a asp-controller="Lotes" asp-action="Index" class="@(Active("Lotes") ? "active" : "")">Lotes</a>
             <a asp-controller="Razas" asp-action="Index" class="@(Active("Razas") ? "active" : "")">Razas</a>
@@ -32,16 +36,21 @@
             <a asp-controller="EstadosAnimal" asp-action="Index" class="@(Active("EstadosAnimal") ? "active" : "")">Estados</a>
         </details>
 
-        <details class="nav-group" open>
+        <details class="nav-group @(InGroup("Reproduccion") ? "has-active" : "")">
+            <summary>Reproducción</summary>
+            <a asp-controller="Reproduccion" asp-action="Historial" class="@(Active("Reproduccion") && ViewContext.RouteData.Values["action"]?.ToString() == "Historial" ? "active" : "")">Historial partos</a>
+            <a asp-controller="Reproduccion" asp-action="RegistrarParto" class="@(Active("Reproduccion") && ViewContext.RouteData.Values["action"]?.ToString() == "RegistrarParto" ? "active" : "")">Registrar parto</a>
+        </details>
+
+        <details class="nav-group @(InGroup("Compras", "Ventas", "Muertes", "TratamientosVeterinarios") ? "has-active" : "")">
             <summary>Operaciones</summary>
             <a asp-controller="Compras" asp-action="Index" class="@(Active("Compras") ? "active" : "")">Compras</a>
             <a asp-controller="Ventas" asp-action="Index" class="@(Active("Ventas") ? "active" : "")">Ventas</a>
             <a asp-controller="Muertes" asp-action="Index" class="@(Active("Muertes") ? "active" : "")">Muertes</a>
-            <a asp-controller="Partos" asp-action="Index" class="@(Active("Partos") ? "active" : "")">Partos</a>
             <a asp-controller="TratamientosVeterinarios" asp-action="Index" class="@(Active("TratamientosVeterinarios") ? "active" : "")">Tratamientos</a>
         </details>
 
-        <details class="nav-group" @(isAdmin ? "open" : null)>
+        <details class="nav-group @(InGroup("Usuarios", "Roles", "AuditoriaCambios") ? "has-active" : "")">
             <summary>Sistema</summary>
             @if (isAdmin)
             {
