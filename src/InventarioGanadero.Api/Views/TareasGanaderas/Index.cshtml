@@ -1,0 +1,23 @@
+@model IList<InventarioGanadero.Infrastructure.Entities.TareaGanadera>
+@{ ViewData["Title"] = "Tareas masivas"; }
+<h2 class="page-title">Tareas masivas</h2>
+@if (User.IsInRole("ADMINISTRADOR") || User.IsInRole("OPERADOR"))
+{
+    <p><a asp-action="Crear" class="btn">Nueva tarea masiva</a></p>
+}
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>Tipo</th><th>Fecha</th><th>Lote</th><th>Animales</th><th>Descripción</th><th></th></tr></thead>
+<tbody>
+@foreach (var t in Model)
+{
+    <tr>
+        <td>@t.IdTarea</td>
+        <td><span class="badge">@t.TipoTarea</span></td>
+        <td>@t.FechaTarea.ToString("dd/MM/yyyy")</td>
+        <td>@t.Lote?.Nombre</td>
+        <td>@t.Detalles.Count</td>
+        <td>@(t.Descripcion ?? "—")</td>
+        <td><a asp-action="Detalle" asp-route-id="@t.IdTarea">Ver detalle</a></td>
+    </tr>
+}
+</tbody></table></div>

@@ -1,0 +1,28 @@
+@model InventarioGanadero.Api.Models.ListaPaginadaViewModel<InventarioGanadero.Infrastructure.Entities.Palpacion>
+@{ ViewData["Title"] = "Palpaciones"; ViewData["ControllerName"] = "Palpaciones"; }
+<h2 class="page-title">Palpaciones</h2>
+@if (User.IsInRole("ADMINISTRADOR") || User.IsInRole("OPERADOR"))
+{
+    <p><a asp-action="Create" class="btn">Nueva palpación</a>
+    <a asp-controller="TareasGanaderas" asp-action="Crear" class="btn btn-secondary">Tarea masiva</a></p>
+}
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>Animal</th><th>Fecha</th><th>Resultado</th><th>Meses</th><th>Responsable</th><th></th></tr></thead>
+<tbody>
+@foreach (var i in Model.Items) {
+<tr>
+<td>@i.IdPalpacion</td>
+<td><a asp-controller="Animales" asp-action="Detalle" asp-route-numero="@i.Numero" asp-route-anio="@i.Anio">@i.Numero/@i.Anio</a></td>
+<td>@i.FechaPalpacion.ToString("dd/MM/yyyy")</td>
+<td><span class="badge">@i.Resultado</span></td>
+<td>@(i.MesesGestacion?.ToString() ?? "—")</td>
+<td>@(i.Responsable ?? "—")</td>
+<td class="actions">
+@if (User.IsInRole("ADMINISTRADOR") || User.IsInRole("OPERADOR")) {
+<a asp-action="Edit" asp-route-id="@i.IdPalpacion">Editar</a>
+}
+<a asp-controller="Animales" asp-action="Detalle" asp-route-numero="@i.Numero" asp-route-anio="@i.Anio">Hoja vida</a>
+</td>
+</tr> }
+</tbody></table></div>
+<partial name="_Paginacion" model="Model" />

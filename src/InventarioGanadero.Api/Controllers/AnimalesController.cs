@@ -1,5 +1,6 @@
 using InventarioGanadero.Api.Constants;
 using InventarioGanadero.Api.Helpers;
+using InventarioGanadero.Api.Services.Historial;
 using InventarioGanadero.Infrastructure.Entities;
 using InventarioGanadero.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,20 @@ using Microsoft.EntityFrameworkCore;
 namespace InventarioGanadero.Api.Controllers;
 
 [Authorize(Roles = RoleNames.Todos)]
-public class AnimalesController(RegistroGanaderoDbContext db) : Controller
+public class AnimalesController(RegistroGanaderoDbContext db, IAnimalHistorialService historial) : Controller
 {
+    public IActionResult Buscar() => View();
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public IActionResult Buscar(int numero, int anio) =>
+        RedirectToAction(nameof(Detalle), new { numero, anio });
+
+    public async Task<IActionResult> Detalle(int numero, int anio, CancellationToken ct = default)
+    {
+        var vm = await historial.ObtenerDetalleAsync(numero, anio, ct);
+        return vm is null ? NotFound() : View(vm);
+    }
+
     public async Task<IActionResult> Index(int pagina = 1, CancellationToken ct = default)
     {
         var vm = await db.Animales.AsNoTracking()

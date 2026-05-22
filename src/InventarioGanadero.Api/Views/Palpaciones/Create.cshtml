@@ -1,0 +1,15 @@
+@model Palpacion
+@{ ViewData["Title"] = "Nueva palpación"; }
+<form asp-action="Create" method="post" class="form-card">
+<div asp-validation-summary="ModelOnly"></div>
+<div class="form-group"><label>Animal</label><select name="animalKey" asp-items="ViewBag.AnimalKey"><option value="">—</option></select></div>
+<div class="form-group"><label asp-for="FechaPalpacion"></label><input asp-for="FechaPalpacion" type="date" /></div>
+<div class="form-group"><label asp-for="Resultado"></label><select asp-for="Resultado" asp-items="ViewBag.Resultado"></select></div>
+<div class="form-group"><label asp-for="MesesGestacion"></label><input asp-for="MesesGestacion" type="number" min="0" max="24" /></div>
+<div class="form-group"><label asp-for="MedicamentoAplicado"></label><input asp-for="MedicamentoAplicado" /></div>
+<div class="form-group"><label asp-for="Dosis"></label><input asp-for="Dosis" /></div>
+<div class="form-group"><label asp-for="Responsable"></label><input asp-for="Responsable" /></div>
+<div class="form-group"><label asp-for="Observacion"></label><textarea asp-for="Observacion" rows="2"></textarea></div>
+<div class="form-actions"><button type="submit">Guardar</button><a asp-action="Index" class="btn btn-secondary">Cancelar</a></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

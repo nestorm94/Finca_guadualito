@@ -1,0 +1,73 @@
+@model InventarioGanadero.Api.Models.ViewModels.RegistrarTareaMasivaViewModel
+@{ ViewData["Title"] = "Tarea masiva"; }
+<link rel="stylesheet" href="~/css/tareas.css" asp-append-version="true" />
+
+<h2 class="page-title">Registrar tarea masiva</h2>
+<p class="hint">Aplica vacunación, palpación, tratamiento o cambio de lote a todos los animales activos del lote seleccionado.</p>
+
+<form asp-action="Crear" method="post" class="form-card form-card--wide" id="formTarea">
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label asp-for="TipoTarea"></label>
+            <select asp-for="TipoTarea" asp-items="ViewBag.TipoTarea" id="tipoTarea"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="FechaTarea"></label>
+            <input asp-for="FechaTarea" type="date" />
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label asp-for="IdLote"></label>
+            <select asp-for="IdLote" asp-items="ViewBag.IdLote"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdPropietario"></label>
+            <select asp-for="IdPropietario" asp-items="ViewBag.IdPropietario">
+                <option value="">— Todos del lote —</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group"><label asp-for="Responsable"></label><input asp-for="Responsable" /></div>
+    <div class="form-group"><label asp-for="Descripcion"></label><input asp-for="Descripcion" placeholder="Opcional" /></div>
+    <div class="form-group"><label asp-for="Observacion"></label><textarea asp-for="Observacion" rows="2"></textarea></div>
+
+    <div id="panelVacunacion" class="panel-tipo">
+        <h3>Vacunación</h3>
+        <div class="form-group"><label asp-for="NombreVacuna"></label><input asp-for="NombreVacuna" /></div>
+        <div class="form-group"><label asp-for="DosisVacuna"></label><input asp-for="DosisVacuna" /></div>
+    </div>
+
+    <div id="panelPalpacion" class="panel-tipo">
+        <h3>Palpación</h3>
+        <div class="form-group"><label asp-for="ResultadoPalpacion"></label><select asp-for="ResultadoPalpacion" asp-items="ViewBag.ResultadoPalpacion"></select></div>
+        <div class="form-group"><label asp-for="Medicamento"></label><input asp-for="Medicamento" placeholder="Opcional" /></div>
+        <div class="form-group"><label asp-for="Dosis"></label><input asp-for="Dosis" /></div>
+    </div>
+
+    <div id="panelTratamiento" class="panel-tipo">
+        <h3>Tratamiento</h3>
+        <div class="form-group"><label asp-for="Medicamento"></label><input asp-for="Medicamento" /></div>
+        <div class="form-group"><label asp-for="Dosis"></label><input asp-for="Dosis" /></div>
+        <div class="form-group"><label asp-for="Motivo"></label><input asp-for="Motivo" /></div>
+    </div>
+
+    <div id="panelCambioLote" class="panel-tipo">
+        <h3>Cambio de lote</h3>
+        <div class="form-group"><label asp-for="IdLoteDestino"></label><select asp-for="IdLoteDestino" asp-items="ViewBag.IdLoteDestino"><option value="">—</option></select></div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn">Aplicar a animales del lote</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/tareas-masivas.js" asp-append-version="true"></script>
+}

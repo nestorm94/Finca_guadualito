@@ -1,0 +1,89 @@
+@model InventarioGanadero.Api.Models.ViewModels.AnimalDetalleViewModel
+@{
+    ViewData["Title"] = $"Hoja de vida {Model.Animal.Numero}/{Model.Animal.Anio}";
+    var a = Model.Animal;
+}
+<link rel="stylesheet" href="~/css/hoja-vida.css" asp-append-version="true" />
+
+<h2 class="page-title">Hoja de vida — @a.Numero/@a.Anio</h2>
+<p class="toolbar">
+    <a asp-action="Index" class="btn btn-secondary">← Animales</a>
+    @if (User.IsInRole("ADMINISTRADOR") || User.IsInRole("OPERADOR"))
+    {
+        <a asp-action="Edit" asp-route-numero="@a.Numero" asp-route-anio="@a.Anio" class="btn">Editar datos</a>
+    }
+</p>
+
+<section class="hv-card">
+    <h3>Información básica</h3>
+    <dl class="hv-grid">
+        <dt>Número / Año</dt><dd>@a.Numero / @a.Anio</dd>
+        <dt>Propietario</dt><dd>@a.Propietario?.Nombre</dd>
+        <dt>Sexo</dt><dd>@a.Sexo</dd>
+        <dt>Tipo</dt><dd>@a.TipoAnimal?.Nombre</dd>
+        <dt>Estado</dt><dd>@a.EstadoAnimal?.Nombre</dd>
+        <dt>Lote</dt><dd>@(a.Lote?.Nombre ?? "—")</dd>
+        <dt>Color</dt><dd>@(a.Color?.Nombre ?? "—")</dd>
+        <dt>Raza</dt><dd>@(a.Raza?.Nombre ?? "—")</dd>
+        <dt>Edad</dt><dd>@Model.EdadTexto</dd>
+        <dt>Bimestre nac.</dt><dd>@(a.BimestreNacimiento?.ToString() ?? "—")</dd>
+        <dt>Fecha nacimiento</dt><dd>@(a.FechaNacimiento?.ToString("dd/MM/yyyy") ?? "—")</dd>
+        <dt>Observación</dt><dd>@(string.IsNullOrWhiteSpace(a.Observacion) ? "—" : a.Observacion)</dd>
+    </dl>
+</section>
+
+@if (Model.MostrarMadre && Model.Madre is not null)
+{
+    <section class="hv-card">
+        <h3>Madre asociada</h3>
+        <p><a asp-action="Detalle" asp-route-numero="@Model.Madre.Numero" asp-route-anio="@Model.Madre.Anio">@Model.Madre.Identificador</a> — @Model.Madre.TipoAnimal</p>
+    </section>
+}
+
+@if (Model.MostrarCrias)
+{
+    <section class="hv-card">
+        <h3>Crías asociadas</h3>
+        @if (Model.Crias.Count == 0) { <p class="hint">Sin crías registradas.</p> }
+        else
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Cría</th><th>Sexo</th><th>Nacimiento</th><th>Bim.</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach (var c in Model.Crias)
+                        {
+                            <tr>
+                                <td>@c.Identificador</td>
+                                <td>@c.Sexo</td>
+                                <td>@(c.FechaNacimiento?.ToString("dd/MM/yyyy") ?? "—")</td>
+                                <td>@(c.BimestreNacimiento?.ToString() ?? "—")</td>
+                                <td><a asp-action="Detalle" asp-route-numero="@c.Numero" asp-route-anio="@c.Anio">Ver</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+}
+
+<section class="hv-card">
+    <h3>Vacunaciones (@Model.Vacunaciones.Count)</h3>
+    @await Html.PartialAsync("_HistorialVacunaciones", Model.Vacunaciones)
+</section>
+
+<section class="hv-card">
+    <h3>Palpaciones (@Model.Palpaciones.Count)</h3>
+    @await Html.PartialAsync("_HistorialPalpaciones", Model.Palpaciones)
+</section>
+
+<section class="hv-card">
+    <h3>Tratamientos / medicamentos (@Model.Tratamientos.Count)</h3>
+    @await Html.PartialAsync("_HistorialTratamientos", Model.Tratamientos)
+</section>
+
+<section class="hv-card">
+    <h3>Movimientos de lote (@Model.Movimientos.Count)</h3>
+    @await Html.PartialAsync("_HistorialMovimientos", Model.Movimientos)
+</section>

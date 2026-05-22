@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Hoja de vida";
+}
+<h2 class="page-title">Buscar animal — Hoja de vida</h2>
+<p class="hint">Ingrese número y año del animal para ver su historial completo.</p>
+
+<form method="post" asp-action="Buscar" class="form-card">
+    @Html.AntiForgeryToken()
+    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="form-group">
+            <label for="numero">Número</label>
+            <input type="number" name="numero" id="numero" required min="1" autofocus />
+        </div>
+        <div class="form-group">
+            <label for="anio">Año</label>
+            <input type="number" name="anio" id="anio" required value="@DateTime.Now.Year" />
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit">Ver hoja de vida</button>
+        <a asp-action="Index" class="btn btn-secondary">Listado animales</a>
+    </div>
+</form>

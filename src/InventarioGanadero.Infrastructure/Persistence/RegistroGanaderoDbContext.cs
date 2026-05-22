@@ -23,6 +23,9 @@ public class RegistroGanaderoDbContext(DbContextOptions<RegistroGanaderoDbContex
     public DbSet<Muerte> Muertes => Set<Muerte>();
     public DbSet<Parto> Partos => Set<Parto>();
     public DbSet<RelacionMadreCria> RelacionesMadreCria => Set<RelacionMadreCria>();
+    public DbSet<Palpacion> Palpaciones => Set<Palpacion>();
+    public DbSet<TareaGanadera> TareasGanaderas => Set<TareaGanadera>();
+    public DbSet<DetalleTareaGanadera> DetalleTareasGanaderas => Set<DetalleTareaGanadera>();
     public DbSet<AuditoriaCambio> AuditoriaCambios => Set<AuditoriaCambio>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -89,6 +92,7 @@ public class RegistroGanaderoDbContext(DbContextOptions<RegistroGanaderoDbContex
             e.ToTable("Vacunaciones");
             e.HasKey(x => x.IdVacunacion);
             e.HasOne(x => x.Animal).WithMany().HasForeignKey(x => new { x.Numero, x.Anio });
+            e.HasIndex(x => new { x.Numero, x.Anio, x.FechaVacunacion, x.NombreVacuna }).IsUnique();
         });
 
         modelBuilder.Entity<TratamientoVeterinario>(e =>
@@ -134,6 +138,33 @@ public class RegistroGanaderoDbContext(DbContextOptions<RegistroGanaderoDbContex
             e.ToTable("RelacionMadreCria");
             e.HasKey(x => x.IdRelacion);
             e.HasOne(x => x.Cria).WithMany().HasForeignKey(x => new { x.NumeroCria, x.AnioCria });
+        });
+
+        modelBuilder.Entity<Palpacion>(e =>
+        {
+            e.ToTable("Palpaciones");
+            e.HasKey(x => x.IdPalpacion);
+            e.Property(x => x.Resultado).HasMaxLength(30);
+            e.HasOne(x => x.Animal).WithMany().HasForeignKey(x => new { x.Numero, x.Anio });
+        });
+
+        modelBuilder.Entity<TareaGanadera>(e =>
+        {
+            e.ToTable("TareasGanaderas");
+            e.HasKey(x => x.IdTarea);
+            e.Property(x => x.TipoTarea).HasMaxLength(30);
+            e.HasOne(x => x.Lote).WithMany().HasForeignKey(x => x.IdLote);
+            e.HasOne(x => x.Propietario).WithMany().HasForeignKey(x => x.IdPropietario);
+            e.HasOne(x => x.LoteDestino).WithMany().HasForeignKey(x => x.IdLoteDestino);
+            e.HasMany(x => x.Detalles).WithOne(d => d.Tarea).HasForeignKey(d => d.IdTarea);
+        });
+
+        modelBuilder.Entity<DetalleTareaGanadera>(e =>
+        {
+            e.ToTable("DetalleTareaGanadera");
+            e.HasKey(x => x.IdDetalleTarea);
+            e.Property(x => x.EstadoRegistro).HasMaxLength(30);
+            e.HasOne(x => x.Animal).WithMany().HasForeignKey(x => new { x.Numero, x.Anio });
         });
 
         modelBuilder.Entity<AuditoriaCambio>(e =>

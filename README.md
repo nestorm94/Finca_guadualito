@@ -13,11 +13,9 @@ Sistema web **ASP.NET Core MVC** para inventario ganadero, vacunaciones y admini
 
 ## Configuración
 
-Editar `src/InventarioGanadero.Api/appsettings.json`:
-
-```json
-"RegistroGanadero": "Server=(localdb)\\MSSQLLocalDB;Database=DBRegistroGanadero;Trusted_Connection=True;TrustServerCertificate=True;"
-```
+- **Desarrollo:** `appsettings.Development.json` → LocalDB
+- **Producción / IIS:** `appsettings.Production.json` → `.\SQLEXPRESS`
+- **Despliegue IIS (pruebas + producción):** ver [DEPLOY_MULTI_AMBIENTE.md](DEPLOY_MULTI_AMBIENTE.md)
 
 Script de columna `PasswordHash`: `Scripts/001_AddPasswordHash.sql`
 

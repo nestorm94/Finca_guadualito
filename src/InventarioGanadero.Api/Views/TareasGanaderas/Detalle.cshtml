@@ -1,0 +1,32 @@
+@model InventarioGanadero.Api.Models.ViewModels.TareaMasivaResultadoViewModel
+@{ ViewData["Title"] = $"Tarea #{Model.IdTarea}"; }
+<h2 class="page-title">Resultado tarea masiva #@Model.IdTarea</h2>
+
+<div class="info-bar">
+    <strong>@Model.TipoTarea</strong> · Lote @Model.LoteNombre · @Model.FechaTarea.ToString("dd/MM/yyyy")<br />
+    Total animales: <strong>@Model.TotalAnimales</strong> ·
+    Registros creados: <strong>@Model.RegistrosCreados</strong>
+    @if (Model.DuplicadosOmitidos > 0) { <span>· Omitidos (duplicados): <strong>@Model.DuplicadosOmitidos</strong></span> }
+</div>
+
+<p><a asp-action="Index" class="btn btn-secondary">← Tareas</a></p>
+
+<div class="table-wrap"><table>
+<thead><tr><th>Animal</th><th>Estado</th><th>Registro</th><th>Acciones</th></tr></thead>
+<tbody>
+@foreach (var d in Model.Detalles)
+{
+    <tr>
+        <td><a asp-controller="Animales" asp-action="Detalle" asp-route-numero="@d.Numero" asp-route-anio="@d.Anio">@d.Animal</a></td>
+        <td><span class="badge">@d.EstadoRegistro</span></td>
+        <td>@(d.TipoRegistroOrigen ?? "—") #@(d.IdRegistroOrigen?.ToString() ?? "—")</td>
+        <td class="actions">
+            <a asp-controller="Animales" asp-action="Detalle" asp-route-numero="@d.Numero" asp-route-anio="@d.Anio">Hoja de vida</a>
+            @if (d.TipoRegistroOrigen == "PALPACION" && d.IdRegistroOrigen.HasValue && (User.IsInRole("ADMINISTRADOR") || User.IsInRole("OPERADOR")))
+            {
+                <a asp-controller="Palpaciones" asp-action="Edit" asp-route-id="@d.IdRegistroOrigen">Editar palpación</a>
+            }
+        </td>
+    </tr>
+}
+</tbody></table></div>

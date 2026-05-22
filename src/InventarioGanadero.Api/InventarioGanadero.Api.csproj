@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\InventarioGanadero.Infrastructure\InventarioGanadero.Infrastructure.csproj" />
   </ItemGroup>

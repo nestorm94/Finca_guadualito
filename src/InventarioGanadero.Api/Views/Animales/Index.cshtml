@@ -1,7 +1,10 @@
 @model ListaPaginadaViewModel<Animal>
 @{ ViewData["Title"] = "Animales"; ViewData["ControllerName"] = "Animales"; }
 <h2 class="page-title">Inventario de animales</h2>
-<p><a asp-action="Create" class="btn">Nuevo animal</a></p>
+<p>
+    <a asp-action="Create" class="btn">Nuevo animal</a>
+    <a asp-action="Buscar" class="btn btn-secondary">Hoja de vida</a>
+</p>
 <div class="table-wrap">
 <table>
 <thead><tr><th>Número</th><th>Año</th><th>Propietario</th><th>Tipo</th><th>Sexo</th><th>Lote</th><th>Acciones</th></tr></thead>
@@ -11,6 +14,7 @@
 <td>@item.Numero</td><td>@item.Anio</td><td>@item.Propietario?.Nombre</td><td>@item.TipoAnimal?.Nombre</td>
 <td>@item.Sexo</td><td>@item.Lote?.Nombre</td>
 <td class="actions">
+<a asp-action="Detalle" asp-route-numero="@item.Numero" asp-route-anio="@item.Anio">Hoja de vida</a>
 <a asp-action="Edit" asp-route-numero="@item.Numero" asp-route-anio="@item.Anio">Editar</a>
 <a asp-action="Delete" asp-route-numero="@item.Numero" asp-route-anio="@item.Anio">Eliminar</a>
 </td></tr> }
